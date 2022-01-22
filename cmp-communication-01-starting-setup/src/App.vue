@@ -3,6 +3,7 @@
     <header>
       <h1>My Friends</h1>
     </header>
+    <new-friend @add-contact="pushContact"/> 
     <ul>
       <friend-contact
         v-for="friend in friends"
@@ -13,6 +14,7 @@
         :email-address="friend.email"
         :is-favourite="friend.isFavourite"
         @toggle-favourite="toggleFavouriteStatus"
+        @delete="deleteFriend"
       />
     </ul>
   </section>
@@ -45,6 +47,24 @@ export default {
         friend => friend.id === friendId
       )
       indentifeidFriend.isFavourite = !indentifeidFriend.isFavourite
+    },
+    pushContact(name, phone, email){
+      console.log(name, phone, email)
+      const id = new Date().toISOString()
+      const isFavourite = false
+      const newFriend = {
+        id,
+        name,
+        phone,
+        email,
+        isFavourite
+      }
+      this.friends.push(newFriend)
+    },
+    deleteFriend(friendId){
+      this.friends = this.friends.filter(
+        friend => friend.id !== friendId
+      )
     }
   }
 };
@@ -71,7 +91,7 @@ header {
   width: 90%;
   max-width: 40rem;
 }
-#app ul {
+#app ul , #app form{
   margin: 0;
   padding: 0;
   list-style: none;
